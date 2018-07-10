@@ -4,7 +4,7 @@ const blessed = require('blessed')
 const term = require( 'terminal-kit' ).terminal
 
 const colSize = 12
-const symbols = ['khc', 'teva', 'sogo']
+const symbols = ['khc', 'teva', 'sogo', , 'iq']
 
 const fillWithSpace = (columnSize, remain) => {
   const length = String(remain).length
@@ -18,7 +18,7 @@ const fetchQuote = async (symbol) => {
 
   term.bold.green(quote.symbol).bold(fillWithSpace(colSize, quote.symbol))
   term.bold(quote.open).bold(fillWithSpace(colSize, quote.open))
-  
+
   if(quote.open > quote.latestPrice) {
     term.green(quote.latestPrice).bold(fillWithSpace(colSize, quote.latestPrice))
   } else {
@@ -30,13 +30,14 @@ const fetchQuote = async (symbol) => {
   } else {
     term.red(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
   }
-  
+
   term('\n')
   return quote
 }
 
 
 setInterval(() => {
+  term.clear()
   term.bold('\n\nSymbol      Open        Current     Changed\n')
   term.bold.green('-------------------------------\n')
   Promise.all(symbols.map(symbol => fetchQuote(symbol)))
