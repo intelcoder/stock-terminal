@@ -20,9 +20,9 @@ const fetchQuote = async (symbol) => {
   term.bold(quote.open).bold(fillWithSpace(colSize, quote.open))
 
   if(quote.open > quote.latestPrice) {
-    term.green(quote.latestPrice).bold(fillWithSpace(colSize, quote.latestPrice))
-  } else {
     term.red(quote.latestPrice).bold(fillWithSpace(colSize, quote.latestPrice))
+  } else {
+    term.green(quote.latestPrice).bold(fillWithSpace(colSize, quote.latestPrice))
   }
   if(quote.changePercent > 0) {
 
