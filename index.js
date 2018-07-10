@@ -4,7 +4,7 @@ const blessed = require('blessed')
 const term = require( 'terminal-kit' ).terminal
 
 const colSize = 12
-const symbols = ['khc', 'teva', 'sogo', , 'iq']
+const symbols = ['khc', 'teva', 'sogo', 'iq']
 
 const fillWithSpace = (columnSize, remain) => {
   const length = String(remain).length
@@ -40,5 +40,8 @@ setInterval(() => {
   term.clear()
   term.bold('\n\nSymbol      Open        Current     Changed\n')
   term.bold.green('-------------------------------\n')
-  Promise.all(symbols.map(symbol => fetchQuote(symbol)))
-}, 5000)
+  for(let i = 0; i < symbols.length; i++) {
+    fetchQuote(symbols[i])
+  }
+  // Promise.all(symbols.map(symbol => fetchQuote(symbol)))
+}, 60 * 1000)
