@@ -13,9 +13,11 @@ const fillWithSpace = (columnSize, remain) => {
 
 const fetchQuote = async (symbol) => {
   const res = await fetch(`https://api.iextrading.com/1.0/stock/${symbol}/quote`)
-  const quote = await res.json()
-  // console.log(quote)
-
+  return res.json()
+}
+const printOnTerminal = (quote) => {
+  term.bold('\n\nSymbol      Open        Current     Changed\n')
+  term.bold.green('-------------------------------\n')
   term.bold.green(quote.symbol).bold(fillWithSpace(colSize, quote.symbol))
   term.bold(quote.open).bold(fillWithSpace(colSize, quote.open))
 
@@ -30,18 +32,21 @@ const fetchQuote = async (symbol) => {
   } else {
     term.red(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
   }
-
-  term('\n')
-  return quote
 }
 
-
-setInterval(() => {
-  term.clear()
-  term.bold('\n\nSymbol      Open        Current     Changed\n')
-  term.bold.green('-------------------------------\n')
+(async () =>{
   for(let i = 0; i < symbols.length; i++) {
-    fetchQuote(symbols[i])
+    const quote = await fetchQuote(symbols[i])
+    printOnTerminal(quote)
+  }
+})()
+
+setInterval(async () => {
+  term.clear()
+  for(let i = 0; i < symbols.length; i++) {
+    const quote = await fetchQuote(symbols[i])
+    printOnTerminal(quote)
   }
   // Promise.all(symbols.map(symbol => fetchQuote(symbol)))
 }, 60 * 1000)
+
