@@ -16,8 +16,6 @@ const fetchQuote = async (symbol) => {
   return res.json()
 }
 const printOnTerminal = (quote) => {
-  term.bold('\n\nSymbol      Open        Current     Changed\n')
-  term.bold.green('-------------------------------\n')
   term.bold.green(quote.symbol).bold(fillWithSpace(colSize, quote.symbol))
   term.bold(quote.open).bold(fillWithSpace(colSize, quote.open))
 
@@ -27,26 +25,30 @@ const printOnTerminal = (quote) => {
     term.green(quote.latestPrice).bold(fillWithSpace(colSize, quote.latestPrice))
   }
   if(quote.changePercent > 0) {
-
     term.green(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
   } else {
     term.red(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
   }
+  term('\n')
 }
 
-(async () =>{
+const getQuotes = async () => {
+  const quotes = []
   for(let i = 0; i < symbols.length; i++) {
     const quote = await fetchQuote(symbols[i])
-    printOnTerminal(quote)
+    quotes.push(quote)
   }
-})()
+  return quotes
+}
+const showResult = async () => {
+  const quotes = await getQuotes()
+  term.bold('Symbol      Open        Current     Changed\n')
+  term.bold.green('-------------------------------\n')
+  quotes.forEach(quote => printOnTerminal(quote))
+}
 
+showResult()
 setInterval(async () => {
-  term.clear()
-  for(let i = 0; i < symbols.length; i++) {
-    const quote = await fetchQuote(symbols[i])
-    printOnTerminal(quote)
-  }
-  // Promise.all(symbols.map(symbol => fetchQuote(symbol)))
+  showResult()
 }, 60 * 1000)
 
