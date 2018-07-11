@@ -24,7 +24,7 @@ const printOnTerminal = (quote) => {
   } else {
     term.green(quote.latestPrice).bold(fillWithSpace(colSize, quote.latestPrice))
   }
-  if(quote.changePercent > 0) {
+  if(quote.changePercent > 0 && quote.open < quote.latestPrice) {
     term.green(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
   } else {
     term.red(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
