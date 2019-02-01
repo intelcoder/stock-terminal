@@ -4,7 +4,7 @@ const blessed = require('blessed')
 const term = require( 'terminal-kit' ).terminal
 
 const colSize = 12
-const symbols = ['khc', 'teva', 'sogo', 'iq']
+const symbols = ['fb', 'aapl','stz', 'baba', 'teva']
 
 const fillWithSpace = (columnSize, remain) => {
   const length = String(remain).length
@@ -24,10 +24,11 @@ const printOnTerminal = (quote) => {
   } else {
     term.green(quote.latestPrice).bold(fillWithSpace(colSize, quote.latestPrice))
   }
+  const changedPercentage = (quote.changePercent * 100).toFixed(2)
   if(quote.changePercent > 0 && quote.open < quote.latestPrice) {
-    term.green(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
+    term.green(changedPercentage + '% ').bold(fillWithSpace(colSize, changedPercentage))
   } else {
-    term.red(quote.changePercent).bold(fillWithSpace(colSize, (quote.changePercent * 100).toFixed(2)))
+    term.red(changedPercentage + '% ').bold(fillWithSpace(colSize, changedPercentage))
   }
   term('\n')
 }
@@ -50,5 +51,5 @@ const showResult = async () => {
 showResult()
 setInterval(async () => {
   showResult()
-}, 60 * 1000)
+}, 5000)
 
